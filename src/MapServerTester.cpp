@@ -133,10 +133,13 @@ RTC::ReturnCode_t MapServerTester::onExecute(RTC::UniqueId ec_id)
     std::cout << "img(" << row << " x " << col << ")" << std::endl;
     for(int r = 0;r < row;r++) {
       for(int c = 0;c < col;c++) {
-	img.at<uchar>(r, c, 0) = map->cells[r*col+c];
-      }
+	    //img.at<uchar>(r, c, 0) = map->cells[r*col+c];
+		  img.data[r*col + c] = map->cells[r*col + c];
+	  }
     }
-    cv::imwrite("output.png", img);
+	cv::Mat tmp;
+	cv::cvtColor(img, tmp, cv::COLOR_GRAY2BGR);
+    cv::imwrite("output.png", tmp);
   } else {
     std::cout << "Invalid Input" << std::endl;
 
