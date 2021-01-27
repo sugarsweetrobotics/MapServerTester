@@ -1,0 +1,54 @@
+# MapServerTester CMake config file
+#
+# This file sets the following variables:
+# MapServerTester_FOUND - Always TRUE.
+# MapServerTester_INCLUDE_DIRS - Directories containing the MapServerTester include files.
+# MapServerTester_IDL_DIRS - Directories containing the MapServerTester IDL files.
+# MapServerTester_LIBRARIES - Libraries needed to use MapServerTester.
+# MapServerTester_DEFINITIONS - Compiler flags for MapServerTester.
+# MapServerTester_VERSION - The version of MapServerTester found.
+# MapServerTester_VERSION_MAJOR - The major version of MapServerTester found.
+# MapServerTester_VERSION_MINOR - The minor version of MapServerTester found.
+# MapServerTester_VERSION_REVISION - The revision version of MapServerTester found.
+# MapServerTester_VERSION_CANDIDATE - The candidate version of MapServerTester found.
+
+message(STATUS "Found MapServerTester-@PROJECT_VERSION@")
+set(MapServerTester_FOUND TRUE)
+
+find_package(<dependency> REQUIRED)
+
+#set(MapServerTester_INCLUDE_DIRS
+#    "@CMAKE_INSTALL_PREFIX@/include/@PROJECT_NAME_LOWER@-@PROJECT_VERSION_MAJOR@"
+#    ${<dependency>_INCLUDE_DIRS}
+#    )
+#
+#set(MapServerTester_IDL_DIRS
+#    "@CMAKE_INSTALL_PREFIX@/include/@PROJECT_NAME_LOWER@-@PROJECT_VERSION_MAJOR@/idl")
+set(MapServerTester_INCLUDE_DIRS
+    "@CMAKE_INSTALL_PREFIX@/include/@CPACK_PACKAGE_FILE_NAME@"
+    ${<dependency>_INCLUDE_DIRS}
+    )
+set(MapServerTester_IDL_DIRS
+    "@CMAKE_INSTALL_PREFIX@/include/@CPACK_PACKAGE_FILE_NAME@/idl")
+
+
+if(WIN32)
+    set(MapServerTester_LIBRARIES
+        "@CMAKE_INSTALL_PREFIX@/@LIB_INSTALL_DIR@/@CMAKE_SHARED_LIBRARY_PREFIX@@PROJECT_NAME_LOWER@@CMAKE_STATIC_LIBRARY_SUFFIX@"
+        ${<dependency>_LIBRARIES}
+        )
+else(WIN32)
+    set(MapServerTester_LIBRARIES
+        "@CMAKE_INSTALL_PREFIX@/@LIB_INSTALL_DIR@/@CMAKE_SHARED_LIBRARY_PREFIX@@PROJECT_NAME_LOWER@@CMAKE_SHARED_LIBRARY_SUFFIX@"
+        ${<dependency>_LIBRARIES}
+        )
+endif(WIN32)
+
+set(MapServerTester_DEFINITIONS ${<dependency>_DEFINITIONS})
+
+set(MapServerTester_VERSION @PROJECT_VERSION@)
+set(MapServerTester_VERSION_MAJOR @PROJECT_VERSION_MAJOR@)
+set(MapServerTester_VERSION_MINOR @PROJECT_VERSION_MINOR@)
+set(MapServerTester_VERSION_REVISION @PROJECT_VERSION_REVISION@)
+set(MapServerTester_VERSION_CANDIDATE @PROJECT_VERSION_CANDIDATE@)
+
