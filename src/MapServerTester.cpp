@@ -130,9 +130,10 @@ RTC::ReturnCode_t MapServerTester::onExecute(RTC::UniqueId ec_id)
     int row = map->config.sizeOfMap.l / map->config.sizeOfGrid.l;
     int typ = CV_8UC1; // grayscale
     cv::Mat img(row, col, typ);
+    std::cout << "img(" << row << " x " << col << ")" << std::endl;
     for(int r = 0;r < row;r++) {
       for(int c = 0;c < col;c++) {
-	img.at<uchar>(r, c, 0) = map->cells[r*row+c];
+	img.at<uchar>(r, c, 0) = map->cells[r*col+c];
       }
     }
     cv::imwrite("output.png", img);
