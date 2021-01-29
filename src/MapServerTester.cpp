@@ -119,6 +119,13 @@ RTC::ReturnCode_t MapServerTester::onExecute(RTC::UniqueId ec_id)
   if (buf.length() > 0 && buf[0] == 'y') {
     std::cout << "[MapServerTester] loading map..." << std::endl;    
     NAVIGATION::OccupancyGridMapRequestParam param;
+    param.globalPositionOfCenter.position.x = 0;
+    param.globalPositionOfCenter.position.y = 0;
+    param.globalPositionOfCenter.heading = 0;
+    param.sizeOfMap.l = 5.0;//-1; // Negative Value ... Maximum Size.
+    param.sizeOfMap.w = 5.0;//-1; // Negative Value ... Maximum Size.
+    param.sizeOfGrid.l = 0.05;
+    param.sizeOfGrid.w = 0.05;
     NAVIGATION::OccupancyGridMap_var map;
     auto ret = m_NAVIGATION_OccupancyGridMapServer->requestLocalMap(param, map);
     if (ret != NAVIGATION::MAP_RETVAL_OK) {
