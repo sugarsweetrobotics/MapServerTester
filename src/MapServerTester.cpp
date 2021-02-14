@@ -9,6 +9,7 @@
 
 #include "MapServerTester.h"
 #include <opencv2/opencv.hpp>
+
 // Module specification
 // <rtc-template block="module_spec">
 static const char* mapservertester_spec[] =
@@ -112,7 +113,6 @@ RTC::ReturnCode_t MapServerTester::onDeactivated(RTC::UniqueId ec_id)
 
 RTC::ReturnCode_t MapServerTester::onExecute(RTC::UniqueId ec_id)
 {
-
   std::cout << "[MapServerTester] Request Map?(y/n)" << std::endl;
   std::string buf;
   std::cin >> buf;
@@ -122,27 +122,28 @@ RTC::ReturnCode_t MapServerTester::onExecute(RTC::UniqueId ec_id)
     param.globalPositionOfCenter.position.x = 0;
     param.globalPositionOfCenter.position.y = 0;
     param.globalPositionOfCenter.heading = 0;
-    param.sizeOfMap.l = 5.0;//-1; // Negative Value ... Maximum Size.
-    param.sizeOfMap.w = 5.0;//-1; // Negative Value ... Maximum Size.
-    param.sizeOfGrid.l = 0.05;
-    param.sizeOfGrid.w = 0.05;
+    param.sizeOfMap.height = 5.0;//-1; // Negative Value ... Maximum Size.
+    param.sizeOfMap.width = 5.0;//-1; // Negative Value ... Maximum Size.
+    param.sizeOfGrid.height = 0.05;
+    param.sizeOfGrid.width = 0.05;
+    param.style = NAVIGATION::MAP_DATA_CELL_IS_BYTE;
     NAVIGATION::OccupancyGridMap_var map;
     auto ret = m_NAVIGATION_OccupancyGridMapServer->requestLocalMap(param, map);
-    if (ret != NAVIGATION::MAP_RETVAL_OK) {
+    if (ret != NAVIGATION::MAP_OK) {
       std::cout << "[MapServerTester] failed to get map" << std::endl;
       return RTC::RTC_OK;
     }
     std::cout << "[MapServerTester] load ok." << std::endl;
-    int col = map->config.sizeOfMap.w / map->config.sizeOfGrid.w;
-    int row = map->config.sizeOfMap.l / map->config.sizeOfGrid.l;
+    int col = map->config.sizeOfGridMap.width;// / map->config.sizeOfGrid.w;
+    int row = map->config.sizeOfGridMap.height;// / map->config.sizeOfGrid.l;
     int typ = CV_8UC1; // grayscale
     cv::Mat img(row, col, typ);
     std::cout << "img(" << row << " x " << col << ")" << std::endl;
     for(int r = 0;r < row;r++) {
       for(int c = 0;c < col;c++) {
-	    //img.at<uchar>(r, c, 0) = map->cells[r*col+c];
-		  img.data[r*col + c] = map->cells[r*col + c];
-	  }
+        //img.at<uchar>(r, c, 0) = map->cells[r*col+c];
+        img.data[r*col + c] = map->cells[r*col + c];
+      }
     }
 	cv::Mat tmp;
 	cv::cvtColor(img, tmp, cv::COLOR_GRAY2BGR);

@@ -16,7 +16,7 @@
 
 // Service implementation headers
 // <rtc-template block="service_impl_h">
-#include "MobileRobotNavigationSVC_impl.h"
+#include "MapServerSVC_impl.h"
 
 // </rtc-template>
 

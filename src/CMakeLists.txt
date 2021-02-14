@@ -1,7 +1,6 @@
 set(comp_srcs MapServerTester.cpp )
 set(standalone_srcs MapServerTesterComp.cpp)
 
-
 find_package(OpenCV REQUIRED)
 if(${OPENRTM_VERSION_MAJOR} LESS 2)
   set(OPENRTM_CFLAGS ${OPENRTM_CFLAGS} ${OMNIORB_CFLAGS})
@@ -36,7 +35,6 @@ include_directories(${PROJECT_BINARY_DIR})
 include_directories(${PROJECT_BINARY_DIR}/idl)
 include_directories(${OPENRTM_INCLUDE_DIRS})
 include_directories(${OpenCV_INCLUDE_DIRS})
-
 add_definitions(${OPENRTM_CFLAGS})
 
 MAP_ADD_STR(comp_hdrs "../" comp_headers)
